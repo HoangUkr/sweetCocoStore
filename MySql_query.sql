@@ -9,3 +9,6 @@ use sweetCocoStore;
 
 -- Show all table of database
 show tables;
+
+-- Grant permision
+GRANT ALL ON sweetCocoStore.* TO 'sweetCocoAdmin'@'%';
