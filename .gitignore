@@ -175,3 +175,7 @@ cython_debug/
 
 # Virtual environment
 cocoEnv/
+
+#Database file
+*.sqlite3
+mydatabase

@@ -76,11 +76,8 @@ WSGI_APPLICATION = 'sweetCoco.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'sweetCocoStore',
-        'USER': 'admin',
-        'PASSWORD': 'admin',
-        'PORT': '13306',  # Use '3306' as default from .env
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': 'mydatabase'
     }
 }
 
