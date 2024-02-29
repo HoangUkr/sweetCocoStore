@@ -1,0 +1,34 @@
+version: '3.8'
+services:
+  db:
+    image: mysql:8.3
+    container_name: sweetCocoDB
+    restart: always
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./db/my.cnf:/etc/mysql/my.cnf
+    ports:
+      - "13306:3306"
+    environment:
+      MYSQL_DATABASE: sweetCocoStore
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: admin
+      MYSQL_ROOT_PASSWORD: superPassword
+  
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: sweetCocoWeb
+    command: sh -c "python manage.py runserver 0.0.0.0:8000"
+    restart: always
+    volumes:
+      - .:/sweetCoco
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+
+volumes:
+  mysql_data:
