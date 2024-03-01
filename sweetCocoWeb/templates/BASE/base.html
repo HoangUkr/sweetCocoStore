@@ -7,7 +7,7 @@
         <meta name="keywords" content="Cake, unica, creative, html">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <title>{% title block %}{% endblock %}</title>
+        <title>{% block title %}{% endblock %}</title>
 
         <!-- Google Font -->
         <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800;900&display=swap"
@@ -26,6 +26,9 @@
         <link rel="stylesheet" href="{% static 'css/owl.carousel.min.css' %}" type="text/css">
         <link rel="stylesheet" href="{% static 'css/slicknav.min.css' %}" type="text/css">
         <link rel="stylesheet" href="{% static 'css/style.css' %}" type="text/css">
+
+        <!-- Add icon-->
+        <link rel="icon" type="image/x-icon" href="{% static 'img/icon/cake.png' %}">
     </head>
     <body>
         <!-- Page Preloder -->
@@ -33,13 +36,13 @@
             <div class="loader"></div>
         </div>
 
-        {% include "offCanvasMenu.html" %}
-        {% include "header.html" %}
+        {% include "BASE/offCanvasMenu.html" %}
+        {% include "BASE/header.html" %}
 
         {% block content %}
         {% endblock %}
 
-        {% include "footer.html" %}
-        {% include "JSplugin.html"%}
+        {% include "BASE/footer.html" %}
+        {% include "BASE/JSplugin.html"%}
     </body>
 </html>
