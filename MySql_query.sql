@@ -12,3 +12,8 @@ show tables;
 
 -- Grant permision
 GRANT ALL ON sweetCocoStore.* TO 'sweetCocoAdmin'@'%';
+FLUSH PRIVILEGES;
+
+-- Create test database
+create database test_sweetcocostore;
+DROP DATABASE test_sweetcocostore;

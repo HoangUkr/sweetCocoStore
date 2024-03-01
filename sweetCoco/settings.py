@@ -82,7 +82,12 @@ WSGI_APPLICATION = 'sweetCoco.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',  
-        'NAME': env('DB_NAME'),  
+        'NAME': env('DB_NAME'),
+        'TEST': {
+            'NAME': 'test_' + env('DB_NAME'),  # This is the test database name
+            'CHARSET': 'utf8mb4',
+            'COLLATION': 'utf8mb4_unicode_ci',
+        },
         'USER': env('DB_USER'),  
         'PASSWORD': env('DB_PASSWORD'),  
         'HOST': env('DB_HOST'),  

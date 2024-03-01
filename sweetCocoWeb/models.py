@@ -4,7 +4,7 @@ from django.db import models
 # Create your models here.
 # Product model
 class Product(models.Model):
-    productId  = models.AutoField(primary_key=True) # The unique ID of a cake
+    id  = models.AutoField(primary_key=True) # The unique ID of a cake
     name = models.CharField(max_length=50, blank=False, null=False)
     url = models.CharField(max_length=255, blank=False, null=False)
     price = models.FloatField(blank=False, null=False)
@@ -14,13 +14,8 @@ class Product(models.Model):
         ordering = ['name', 'price']
     
     def __str__(self) -> str:
-        return f'Cake ID: {self.cakeId}. Cake Name: {self.name}. Cake Price: {self.price}'
+        return f'Cake ID: {self.id}. Cake Name: {self.name}. Cake Price: {self.price}'
 
-    def __init__(self, name, url, price, description):
-        self.name = name
-        self.url = url
-        self.price = price
-        self.description = description
 # Order model
 class Order(models.Model):
     orderId = models.AutoField(primary_key=True) # The unique ID of Order
