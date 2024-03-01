@@ -12,3 +12,7 @@ def home(request):
 # Render shop page
 def shop(request):
     return render(request, 'PAGE/shop.html')
+
+# Render cart page
+def cart(request):
+    return render(request, 'PAGE/cart.html')
