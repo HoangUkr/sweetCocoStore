@@ -8,6 +8,7 @@ class Product(models.Model):
     name = models.CharField(max_length=50, blank=False, null=False)
     url = models.CharField(max_length=255, blank=False, null=False)
     price = models.FloatField(blank=False, null=False)
+    category = models.CharField(max_length=50, blank=False, null=False, default='Cupcake')
     description = models.TextField()
     
     class Meta:

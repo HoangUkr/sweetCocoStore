@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.urls import reverse
+from .models import Product
 
 # Create your views here.
 
@@ -11,7 +12,11 @@ def home(request):
 
 # Render shop page
 def shop(request):
-    return render(request, 'PAGE/shop.html')
+    products = Product.objects.all()
+    context = {
+        'products': products
+    }
+    return render(request, 'PAGE/shop.html', context=context)
 
 # Render cart page
 def cart(request):
