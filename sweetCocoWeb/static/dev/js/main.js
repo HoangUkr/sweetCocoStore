@@ -224,12 +224,9 @@
         $button.parent().find('input').val(newVal);
     });
 
-    
-
     $(".product__details__thumb").niceScroll({
         cursorborder: "",
         cursorcolor: "rgba(0, 0, 0, 0.5)",
         boxzoom: false
-      });
-
+    });
 })(jQuery);
