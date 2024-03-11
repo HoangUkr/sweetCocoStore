@@ -11,8 +11,7 @@ urlpatterns = [
     path('cart/', views.cart, name='cart'),
     path('add_product/<int:pk>/', views.add_to_cart_ajax, name='add_product'),
 
-
-
+    # API URL
     path('products/', ProductListCreateView.as_view(), name='product-list-create'),
     path('products/<int:pk>', ProductRetrieveUpdateDestroyView.as_view(), name='product-retrieve-update-destroy')
 ]
