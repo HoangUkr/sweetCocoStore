@@ -7,7 +7,7 @@ class Product(models.Model):
     id  = models.AutoField(primary_key=True) # The unique ID of a cake
     name = models.CharField(max_length=50, blank=False, null=False)
     url = models.CharField(max_length=255, blank=False, null=False)
-    price = models.FloatField(blank=False, null=False)
+    price = models.DecimalField(max_digits=10, decimal_places=2, blank=False, null=False, default=0)
     category = models.CharField(max_length=50, blank=False, null=False, default='Cupcake')
     description = models.TextField()
     
@@ -22,7 +22,7 @@ class Order(models.Model):
     orderId = models.AutoField(primary_key=True) # The unique ID of Order
     isFinish = models.BooleanField(default=False)   # Whether the order was done
     isSent = models.BooleanField(default=False) # Whether the Order was sent
-    total  = models.FloatField(blank=False, null=False, default=0)
+    total  = models.DecimalField(max_digits=10, decimal_places=2, blank=False, null=False, default=0)
     createdDate = models.DateTimeField(auto_now_add=True)
     sentDate = models.DateTimeField(null=True, blank=True)
     finishedDate = models.DateTimeField(null=True, blank=True)

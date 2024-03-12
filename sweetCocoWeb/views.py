@@ -33,7 +33,7 @@ def cart(request):
 
 # Update total price after add to cart
 def update_total(order):
-    total = sum(item.sub_total() for item in OrderItem.objects.filter(order=order))
+    total = sum(item.subTotal() for item in OrderItem.objects.filter(order=order))
     order.total = total
     order.save()
 
@@ -65,5 +65,28 @@ def add_to_cart_ajax(request, pk):
         }
         return JsonResponse(response_data)
     
-def delete_item_from_cart(request, pk):
+# Delete item from order
+def delete_item_from_cart(request, order_item_id, order_id):
+    try:
+        order = get_object_or_404(Order, orderId=order_id)
+        if request.method == 'DELETE':
+            order_items = OrderItem.objects.get(order=order, id=order_item_id)
+            order_items.delete()
+            update_total(order)
+            response_data = {
+                'message': 'Successfully deleted.',
+                'errorcode': 0,
+                'total' : order.total
+            }
+        return JsonResponse(response_data)
+    except Http404:
+        response_data = {
+            'message': 'Order is not found.',
+            'errorcode': 1,
+            'total' : 0
+        }
+        return JsonResponse(response_data)
+
+# Change quantity
+def change_quantity(request, pk):
     pass
