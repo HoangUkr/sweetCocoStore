@@ -10,6 +10,7 @@ urlpatterns = [
     path('shop/', views.shop, name='shop'),
     path('cart/', views.cart, name='cart'),
     path('add_product/<int:pk>/', views.add_to_cart_ajax, name='add_product'),
+    path('delete_item_from_cart/<int:pk>/', views.delete_item_from_cart, name='delete_item_from_cart'),
 
     # API URL
     path('products/', ProductListCreateView.as_view(), name='product-list-create'),

@@ -20,14 +20,20 @@ def shop(request):
 
 # Render cart page
 def cart(request):
-    return render(request, 'PAGE/cart.html')
+    order = Order.objects.filter(isSent=False).first()
+    if order:
+        order_items = OrderItem.objects.filter(order=order)
+    else:
+        order_items = OrderItem.objects.none()
+    context = {
+        'order': order,
+        'orderItems': order_items
+    }
+    return render(request, 'PAGE/cart.html', context=context)
 
 # Update total price after add to cart
-def updateTotal(order):
-    total = 0
-    objectItems = OrderItem.objects.filter(order=order)
-    for item in objectItems:
-        total += item.subTotal()
+def update_total(order):
+    total = sum(item.sub_total() for item in OrderItem.objects.filter(order=order))
     order.total = total
     order.save()
 
@@ -36,25 +42,16 @@ def add_to_cart_ajax(request, pk):
     try:
         product = get_object_or_404(Product, pk=pk)
         if request.method == 'POST':
-            isRecentExist = Order.objects.filter(isSent=False).exists()
-            if not isRecentExist:
-                order = Order.objects.create()
-                orderItems = OrderItem.objects.create(order=order, product=product)
-                orderItems.save()
-                updateTotal(order=order)
-                response_data = {
-                    'message': 'Product added to the new cart successfully',
-                    'errorcode': 0
-                }
-            else:
-                recentOrder = Order.objects.get(isSent=False)
-                orderItems = OrderItem.objects.create(order=recentOrder, product=product)
-                orderItems.save()
-                updateTotal(order=recentOrder)
-                response_data = {
-                    'message': 'Product added to the existing cart successfully',
-                    'errorcode': 0
-                }
+            recent_order, created = Order.objects.get_or_create(isSent=False)
+            order_item = OrderItem.objects.create(order=recent_order, product=product)
+            order_item.save()
+            update_total(order=recent_order)
+
+            response_data = {
+                'message': 'Product added to the cart successfully',
+                'errorcode': 0
+            }
+            
         else:
             response_data = {
                 'message': 'Wrong request. Please contact admin',
@@ -67,3 +64,6 @@ def add_to_cart_ajax(request, pk):
             'errorcode': 1
         }
         return JsonResponse(response_data)
+    
+def delete_item_from_cart(request, pk):
+    pass
