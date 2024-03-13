@@ -37,7 +37,7 @@
         <div class="row">
             {% for item in products %}
             <div class="col-lg-3 col-md-6 col-sm-6">
-                <div class="product__item">
+                <div class="product__item" data-product-id = "{{ item.id }}">
                     <div class="product__item__pic set-bg" data-setbg="{% static item.url %}">
                         <div class="product__label">
                             <span>{{ item.category }}</span>
@@ -47,7 +47,7 @@
                         <h6><a href="#">{{ item.name }}</a></h6>
                         <div class="product__item__price">${{ item.price }}</div>
                         <div class="cart_add">
-                            <a href="#" class="add-to-cart-btn" data-product-id = "{{ item.id }}">Add to cart</a>
+                            <a href="#" class="add-to-cart-btn">Add to cart</a>
                         </div>
                     </div>
                 </div>
@@ -80,15 +80,21 @@
     $(document).ready(function() {
         $('.add-to-cart-btn').on('click', function() {
             // debugger;
+            // Get parent div of product item
+            var divParent = $(this).closest('.product__item');
             // Get product id 
-            var productId = $(this).data('product-id');
+            var productId = divParent.data('product-id');
             // Get the CSRF token from the cookie
             var csrftoken = document.cookie.match(/csrftoken=([^ ;]+)/)[1];
             
             $.ajax({
                 type: 'POST',
-                url: '{% url "sweetCocoWeb:add_product" pk=0 %}'.replace('0', productId),
+                url: '{% url "sweetCocoWeb:add_product" %}',
                 dataType: 'json',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    product_id:  productId
+                }),
                 beforeSend: function(xhr, settings) {
                     // Include the CSRF token in the request headers
                     xhr.setRequestHeader("X-CSRFToken", csrftoken);

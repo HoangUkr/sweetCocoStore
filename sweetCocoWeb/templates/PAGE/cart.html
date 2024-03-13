@@ -19,7 +19,7 @@
                         </thead>
                         <tbody>
                             {% for item in orderItems %}
-                            <tr>
+                            <tr data-orderitem-id="{{ item.id }}" data-order-id="{{ order.orderId }}" >
                                 <td class="product__cart__item">
                                     <div class="product__cart__item__pic">
                                         <img src="{% static item.product.url %}" alt="">
@@ -37,7 +37,7 @@
                                     </div>
                                 </td>
                                 <!-- <td class="cart__price">$ </td> -->
-                                <td class="cart__close" data-orderitem-id="{{ item.id }}" data-order-id="{{ order.orderId }}"><span class="icon_close"></span></td>
+                                <td class="cart__close"><span class="icon_close"></span></td>
                             </tr>
                             {% endfor %}
                         </tbody>
@@ -84,21 +84,27 @@
 
 <script>
     $(document).ready(function() {
+        // Click on the button remove item from Order
         $('.cart__close').on('click', function() {
             debugger;
-            // Get order ID and order item ID
-            var orderItemId = $(this).data('orderitem-id');
-            var orderId = $(this).data('order-id');
-
             // Get current row
             var row = $(this).closest('tr');
+
+            // Get order ID and order item ID
+            var orderItemId = row.data('orderitem-id');
+            var orderId = row.data('order-id');
             // Get the CSRF token from the cookie
             var csrftoken = document.cookie.match(/csrftoken=([^ ;]+)/)[1];
             
             $.ajax({
                 type: 'DELETE',
-                url: '{% url "sweetCocoWeb:delete_item_from_cart" order_id=0 order_item_id=1 %}'.replace('0', orderId).replace('1', orderItemId),
+                url: '{% url "sweetCocoWeb:delete_item_from_cart" %}',
                 dataType: 'json',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    order_id:  orderId,
+                    order_item_id: orderItemId
+                }),
                 beforeSend: function(xhr, settings) {
                     // Include the CSRF token in the request headers
                     xhr.setRequestHeader("X-CSRFToken", csrftoken);
@@ -139,6 +145,75 @@
                 }
             });
         });
+
+        // Click on the button to increase the quantity
+        $('.qtybtn').on('click', function() {
+            debugger;
+            // Get current row
+            var row = $(this).closest('tr');
+
+            // Get order ID and order item ID
+            var orderItemId = row.data('orderitem-id');
+            var orderId = row.data('order-id');
+            // Get the CSRF token from the cookie
+            var csrftoken = document.cookie.match(/csrftoken=([^ ;]+)/)[1];
+            var button = $(this);
+            if(button.hasClass('inc')){
+                $.ajax({
+                    type: 'PUT',
+                    url: '{% url "sweetCocoWeb:change_quantity" %}',
+                    dataType: 'json',
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                        order_id:  orderId,
+                        order_item_id: orderItemId,
+                        action: 'plus'
+                    }),
+                    beforeSend: function(xhr, settings) {
+                        // Include the CSRF token in the request headers
+                        xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                    },
+                    success: function(data) {
+                        debugger;
+                        var total = '$' + data.total;
+                        $('#total').text(total);
+                    },
+                    error: function(error) {
+                        console.log(error);
+                    }
+                });
+            }
+            else{
+                $.ajax({
+                    type: 'PUT',
+                    url: '{% url "sweetCocoWeb:change_quantity" %}',
+                    dataType: 'json',
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                        order_id:  orderId,
+                        order_item_id: orderItemId,
+                        action: 'minus'
+                    }),
+                    beforeSend: function(xhr, settings) {
+                        // Include the CSRF token in the request headers
+                        xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                    },
+                    success: function(data) {
+                        debugger;
+                        var total = '$' + data.total;
+                        $('#total').text(total);
+                    },
+                    error: function(error) {
+                        console.log(error);
+                    }
+                });
+            }
+            
+        });
+
+        // Click on the button to decrease the quantity
     });
+
+
 </script>    
 {% endblock %}
