@@ -19,6 +19,7 @@
                         </thead>
                         <tbody>
                             {% for item in orderItems %}
+                            {% csrf_token %}
                             <tr data-orderitem-id="{{ item.id }}" data-order-id="{{ order.orderId }}" >
                                 <td class="product__cart__item">
                                     <div class="product__cart__item__pic">
@@ -84,6 +85,22 @@
 
 <script>
     $(document).ready(function() {
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    // Check if this cookie is the one we're looking for
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        // Get the value of the cookie
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
         // Click on the button remove item from Order
         $('.cart__close').on('click', function() {
             debugger;
@@ -94,7 +111,7 @@
             var orderItemId = row.data('orderitem-id');
             var orderId = row.data('order-id');
             // Get the CSRF token from the cookie
-            var csrftoken = document.cookie.match(/csrftoken=([^ ;]+)/)[1];
+            var csrftoken = getCookie('csrftoken');
             
             $.ajax({
                 type: 'DELETE',
@@ -156,7 +173,7 @@
             var orderItemId = row.data('orderitem-id');
             var orderId = row.data('order-id');
             // Get the CSRF token from the cookie
-            var csrftoken = document.cookie.match(/csrftoken=([^ ;]+)/)[1];
+            var csrftoken = getCookie('csrftoken');
             var button = $(this);
             if(button.hasClass('inc')){
                 $.ajax({
@@ -200,6 +217,7 @@
                     },
                     success: function(data) {
                         debugger;
+                        var type = data.type;
                         var total = '$' + data.total;
                         $('#total').text(total);
                     },

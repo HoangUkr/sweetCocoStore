@@ -1,17 +1,17 @@
 from django.urls import path
-from . import views
+from .views import *
+from .ajax import *
 from .api.product import ProductListCreateView, ProductRetrieveUpdateDestroyView
-from django.http import JsonResponse
 
 app_name = 'sweetCocoWeb'
 urlpatterns = [
-    path('', views.index, name='index'),
-    path('home/', views.home, name='home'),
-    path('shop/', views.shop, name='shop'),
-    path('cart/', views.cart, name='cart'),
-    path('add_product/', views.add_to_cart_ajax, name='add_product'),
-    path('delete_item_from_cart/', views.delete_item_from_cart, name='delete_item_from_cart'),
-    path('change_quantity/', views.change_quantity, name='change_quantity'),
+    path('', index, name='index'),
+    path('home/', home, name='home'),
+    path('shop/', shop, name='shop'),
+    path('cart/', cart, name='cart'),
+    path('add_product/', add_to_cart_ajax, name='add_product'),
+    path('delete_item_from_cart/', delete_item_from_cart_ajax, name='delete_item_from_cart'),
+    path('change_quantity/', change_quantity_ajax, name='change_quantity'),
 
     # API URL
     path('products/', ProductListCreateView.as_view(), name='product-list-create'),
