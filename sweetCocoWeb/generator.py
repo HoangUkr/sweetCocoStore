@@ -1,6 +1,7 @@
 import secrets
 import random
 import datetime
+import decimal
 from dateutil import relativedelta
 
 def string_generator():
@@ -11,10 +12,12 @@ def string_generator():
     
     return string_code
 
-def float_generator():
-    minVal=0.0
-    maxVal=100.0
-    return random.uniform(minVal, maxVal)
+def decimal_generator():
+    minVal=0
+    maxVal=100
+    divideBy = 20
+
+    return float(decimal.Decimal(random.randrange(minVal, maxVal))/divideBy)
 
 def dateTime_generator():
     start_date = datetime.datetime.now()

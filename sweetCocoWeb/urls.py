@@ -9,6 +9,7 @@ urlpatterns = [
     path('home/', home, name='home'),
     path('shop/', shop, name='shop'),
     path('cart/', cart, name='cart'),
+    path('login/', login, name='login'),
     path('add_product/', add_to_cart_ajax, name='add_product'),
     path('delete_item_from_cart/', delete_item_from_cart_ajax, name='delete_item_from_cart'),
     path('change_quantity/', change_quantity_ajax, name='change_quantity'),

@@ -30,3 +30,7 @@ def cart(request):
         'orderItems': order_items
     }
     return render(request, 'PAGE/cart.html', context=context)
+
+# Render login page
+def login(request):
+    return render(request, 'PAGE/login.html')

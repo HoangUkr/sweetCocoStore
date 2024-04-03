@@ -2,14 +2,14 @@ from django.test import TestCase
 from model_bakery import baker
 from decimal import *
 from sweetCocoWeb.models import Order, Product, OrderItem
-from sweetCocoWeb.generator import string_generator, float_generator, dateTime_generator
+from sweetCocoWeb.generator import string_generator, decimal_generator, dateTime_generator
 # Create your tests here.
 class TestProductModel(TestCase): 
     def test_product_creation(self):
         for i in range(0, 5):
             name = string_generator()
             description = string_generator()
-            price = float_generator()
+            price = decimal_generator()
             url = string_generator()
 
             product = Product.objects.create(
