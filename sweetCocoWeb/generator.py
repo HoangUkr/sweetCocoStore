@@ -13,11 +13,9 @@ def string_generator():
     return string_code
 
 def decimal_generator():
-    minVal=0
-    maxVal=100
-    divideBy = 20
-
-    return float(decimal.Decimal(random.randrange(minVal, maxVal))/divideBy)
+    random_decimal = random.random()
+    random_decimal_with_two_digits = round(random_decimal, 2)
+    return random_decimal_with_two_digits
 
 def dateTime_generator():
     start_date = datetime.datetime.now()
