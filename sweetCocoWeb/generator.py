@@ -1,7 +1,7 @@
 import secrets
 import random
 import datetime
-import decimal
+from decimal import Decimal
 from dateutil import relativedelta
 
 def string_generator():
@@ -13,9 +13,12 @@ def string_generator():
     return string_code
 
 def decimal_generator():
+    # Generate a random decimal number between 0 and 1
     random_decimal = random.random()
-    random_decimal_with_two_digits = round(random_decimal, 2)
-    return random_decimal_with_two_digits
+
+    # Convert the float to a Decimal with two digits after the decimal point
+    random_decimal_decimal = Decimal(str(round(random_decimal, 2)))
+    return (random_decimal_decimal)
 
 def dateTime_generator():
     start_date = datetime.datetime.now()
