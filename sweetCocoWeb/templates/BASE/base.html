@@ -31,7 +31,8 @@
         <link rel="icon" type="image/x-icon" href="{% static 'img/icon/cake.png' %}">
 
         <!-- jQuery -->
-        <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
 
         <!-- Sweet Alert lib -->
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -146,6 +147,7 @@
         </div>
 
         <script>
+            $.noConflict();
             $(document).ready(function() {
                 $('.openModalBtn').click(function() {
                     debugger;
@@ -156,6 +158,9 @@
                         me.hide();
                     }
                     $('#loginModal').modal('show');
+                    $('#loginModal').draggable({
+                        "handle":".modal-header"
+                    });
                 });
                 $('.modal').on('hide.bs.modal', function () {
                     debugger;
