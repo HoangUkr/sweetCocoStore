@@ -20,14 +20,14 @@ pip3 install --upgrade pip
 pip install -r requirements.txt
 ```
 6. Create environment variable for local database
-Manually create a file with name '.env' and add the configuration of local dadtabase such as:
-DEBUG
-SECRET_KEY
-DB_NAME
-DB_USER
-DB_PASSWORD
-DB_HOST
-DB_PORT
+Manually create a file with name '.env' and add the configuration of local database such as:
+- DEBUG.
+- SECRET_KEY.
+- DB_NAME.
+- DB_USER.
+- DB_PASSWORD.
+- DB_HOST.
+- DB_PORT.
 **Do not push the env file to the github** 
 7. Run the program
 ```console
