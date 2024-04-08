@@ -28,6 +28,7 @@ Manually create a file with name '.env' and add the configuration of local datab
 - DB_PASSWORD.
 - DB_HOST.
 - DB_PORT.
+
 **Do not push the env file to the github** 
 7. Run the program
 ```console
