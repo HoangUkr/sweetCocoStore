@@ -13,7 +13,7 @@ class Product(models.Model):
     description = models.TextField()
     
     class Meta:
-        ordering = ['name', 'price']
+        ordering = ['name', 'price', 'id']
     
     def __str__(self) -> str:
         return f'Cake ID: {self.id}. Cake Name: {self.name}. Cake Price: {self.price}'
@@ -21,7 +21,7 @@ class Product(models.Model):
 # Order model
 class Order(models.Model):
     orderId = models.AutoField(primary_key=True) # The unique ID of Order
-    user = models.ForeignKey(User, on_delete=models.CASCADE, default=1)
+    customer = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     isFinish = models.BooleanField(default=False)   # Whether the order was done
     isSent = models.BooleanField(default=False) # Whether the Order was sent
     total  = models.DecimalField(max_digits=10, decimal_places=2, blank=False, null=False, default=0)
