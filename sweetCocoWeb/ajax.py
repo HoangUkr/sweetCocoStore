@@ -1,4 +1,6 @@
 from django.shortcuts import get_object_or_404
+from django.contrib.auth.models import User
+from django.contrib.auth import authenticate, login, logout
 from .models import Product, Order, OrderItem
 from django.http import JsonResponse, Http404
 import json
@@ -12,26 +14,19 @@ def update_total(order):
 # Add to cart AJAX function
 def add_to_cart_ajax(request):
     if request.method == 'POST':
-        try:
-            data = json.loads(request.body)
-            product_id = data.get('product_id')
-            product = get_object_or_404(Product, id=product_id)
-            recent_order, created = Order.objects.get_or_create(isSent=False)
-            order_item, order_item_created = OrderItem.objects.get_or_create(order=recent_order, product=product)
-            order_item.quantity += 1
-            order_item.save()
-            update_total(order=recent_order)
-            response_data = {
-                'message': 'Product added to the cart successfully',
-                'errorcode': 0
-            }
-            return JsonResponse(response_data)
-        except Http404:
-            response_data = {
-                'message': 'Product not found. Please contact admin.',
-                'errorcode': 1
-            }
-            return JsonResponse(response_data)
+        data = json.loads(request.body)
+        product_id = data.get('product_id')
+        product = get_object_or_404(Product, id=product_id)
+        recent_order, created = Order.objects.get_or_create(isSent=False)
+        order_item, order_item_created = OrderItem.objects.get_or_create(order=recent_order, product=product)
+        order_item.quantity += 1
+        order_item.save()
+        update_total(order=recent_order)
+        response_data = {
+            'message': 'Product added to the cart successfully',
+            'errorcode': 0
+        }
+        return JsonResponse(response_data)
     else:
         response_data = {
             'message': 'Wrong request. Please contact admin',
@@ -108,6 +103,63 @@ def change_quantity_ajax(request):
                 'total': order.total
             }
             return JsonResponse(response_data)
+        except Http404:
+            response_data = {
+                'type': request.method,
+                'message': 'No record found.',
+                'errorcode': 1,
+                'total': 0
+            }
+            return JsonResponse(response_data)
+    else:
+        response_data = {
+            'type': request.method,
+            'message': 'Invalid request method.',
+            'errorcode': 1,
+            'total': 0
+        }
+        return JsonResponse(response_data)
+    
+# Authorisation functionality
+def authorisation(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            # Get input data
+            user_name = data.get('username')
+            password = data.get('password')
+
+            # Get actiom
+            action = data.get('action')
+
+            if action.lower() == 'registration':
+                if User.objects.filter(username=user_name).exists():
+                    pass
+                else:
+                    pass
+            else:
+                print('Request: ')
+                print(request)
+
+                user = authenticate(request, username=user_name, password=password)
+                print('User: ')
+                print(user)
+                if user is not None:
+                    login(request, user)
+                    response_data = {
+                        'type': request.method,
+                        'message': 'Login successful.',
+                        'errorcode': 0
+                    }
+                    return JsonResponse(response_data)
+                else:
+                    response_data = {
+                        'type': request.method,
+                        'message': 'Wrong username or password.',
+                        'errorcode': 1
+                    }
+                    return JsonResponse(response_data)
+                    
         except Http404:
             response_data = {
                 'type': request.method,

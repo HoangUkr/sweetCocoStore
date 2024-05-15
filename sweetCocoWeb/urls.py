@@ -14,6 +14,9 @@ urlpatterns = [
     path('delete_item_from_cart/', delete_item_from_cart_ajax, name='delete_item_from_cart'),
     path('change_quantity/', change_quantity_ajax, name='change_quantity'),
 
+    # Login and registration
+    path('authorisation/', authorisation, name='authorisation'),
+
     # API URL
     path('products/', ProductListCreateView.as_view(), name='product-list-create'),
     path('products/<int:pk>', ProductRetrieveUpdateDestroyView.as_view(), name='product-retrieve-update-destroy')

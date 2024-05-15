@@ -72,6 +72,7 @@
                                     <div class="tab-pane fade show active" id="login" role="tabpanel" aria-labelledby="login-tab">
                                         <h4 class="text-center mt-4 mb-4" style="text-transform: uppercase;">Login</h4>
                                         <form>
+                                            {% csrf_token %}
                                             <div class="form-row">
                                                 <div class="form-group col-md-12">
                                                     <label for="inputName">Your Username</label>
@@ -94,13 +95,14 @@
                                                 </div>
                                             </div>
                                             <div class="mt-2 mb-3">
-                                                <button class="btn btn-primary full-width" type="submit">Login</button>
+                                                <button class="btn btn-primary full-width" id="login-btn" type="submit">Login</button>
                                             </div>
                                         </form>
                                     </div>
                                     <div class="tab-pane fade" id="register" role="tabpanel" aria-labelledby="register-tab">
                                         <h4 class="text-center mt-4 mb-4" style="text-transform: uppercase;">Register</h4>
                                         <form>
+                                            {% csrf_token %}
                                             <div class="form-row">
                                                 <div class="form-group col-md-12">
                                                     <label for="inputName">Your Name</label>
@@ -133,7 +135,7 @@
                                                     <div class="custom-checkbox d-block">
                                                         <a href="https://demochecks.com/demo/fickrr/login" class="nav-link-inline font-size-sm redirectLink">Already have an account? Login</a>
                                                     </div>
-                                                    <button class="btn btn-primary mt-3 mt-sm-0" type="submit">Register</button>
+                                                    <button class="btn btn-primary mt-3 mt-sm-0" type="submit" id="register-btn">Register</button>
                                                 </div>
                                             </div>
                                         </form>
@@ -147,10 +149,11 @@
         </div>
 
         <script>
-            $.noConflict();
             $(document).ready(function() {
+                // debugger;
+                // $.noConflict();
                 $('.openModalBtn').click(function() {
-                    debugger;
+                    // debugger;
                     // Select the modal element using its ID and open it
                     var me = $('.offcanvas-menu-wrapper'),
                         css = me.css('display');
@@ -158,15 +161,113 @@
                         me.hide();
                     }
                     $('#loginModal').modal('show');
-                    $('#loginModal').draggable({
-                        "handle":".modal-header"
-                    });
+                    // $('#loginModal').draggable({
+                    //     "handle":".modal-header"
+                    // });
                 });
                 $('.modal').on('hide.bs.modal', function () {
-                    debugger;
+                    // debugger;
                     $(".offcanvas-menu-wrapper").removeClass("active");
                     $(".offcanvas-menu-overlay").removeClass("active");
                 });
+
+                // Login button
+                $('#login-btn').click(function(e){
+                    debugger;
+                    var user_name = $('#inputEmail4-login')[0].value,
+                        password = $('#inputPassword4-login')[0].value;
+                    // var csrftoken = getCookie('csrftoken');
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: "top-end",
+                        showConfirmButton: false,
+                        timer: 1500,
+                        timerProgressBar: true,
+                        didOpen: (toast) => {
+                            toast.onmouseenter = Swal.stopTimer;
+                            toast.onmouseleave = Swal.resumeTimer;
+                        }
+                    });
+
+                    $.ajax({
+                        type: 'POST',
+                        url: '{% url "sweetCocoWeb:authorisation" %}',
+                        dataType: 'json',
+                        contentType: 'application/json',
+                        data: JSON.stringify({
+                            username: user_name,
+                            password: password,
+                            action: 'login'
+                        }),
+                        /*
+                        beforeSend: function(xhr, settings) {
+                            debugger;
+                            // Include the CSRF token in the request headers
+                            xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                        },*/
+                        success: function(data) {
+                            debugger;
+                            
+                        },
+                        error: function(error) {
+                            console.log(error);
+                        }
+                    });
+                });
+                // End of login button
+
+                // Register button
+                $('#register-btn').click(function(e){
+                    debugger;
+                    var user_name = $('#inputName4-register')[0].value,
+                        email = $('#inputEmail4-signup')[0].value,
+                        password = $('#inputPassword4-register')[0].value,
+                        confirm_password = $('#inputPassword4-confirm')[0].value;
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: "top-end",
+                        showConfirmButton: false,
+                        timer: 1500,
+                        timerProgressBar: true,
+                        didOpen: (toast) => {
+                            toast.onmouseenter = Swal.stopTimer;
+                            toast.onmouseleave = Swal.resumeTimer;
+                        }
+                    });
+                    if(password !== confirm_password){
+                        Toast.fire({
+                            icon: "error",
+                            title: 'Password does not match.'
+                        });
+                    }
+                    else{
+                        $.ajax({
+                            type: 'POST',
+                            url: '{% url "sweetCocoWeb:authorisation" %}',
+                            dataType: 'json',
+                            contentType: 'application/json',
+                            data: JSON.stringify({
+                                username: user_name,
+                                password: password,
+                                email: email,
+                                action: 'registration'
+                            }),
+                            beforeSend: function(xhr, settings) {
+                                // Include the CSRF token in the request headers
+                                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                            },
+                            success: function(data) {
+                                debugger;
+                                
+                            },
+                            error: function(error) {
+                                console.log(error);
+                            }
+                        });
+                    }
+
+                });
+                // End of register button
             });
         </script>
     </body>
