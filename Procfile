@@ -1,0 +1,1 @@
+web: gunicorn sweetCoco.wsgi --log-file -

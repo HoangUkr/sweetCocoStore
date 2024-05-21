@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 from pathlib import Path
 import os
 import environ
+import dj_database_url
 
 env = environ.Env()
 environ.Env.read_env()
@@ -54,6 +55,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware'
 ]
 
 ROOT_URLCONF = 'sweetCoco.urls'
@@ -81,6 +83,7 @@ WSGI_APPLICATION = 'sweetCoco.wsgi.application'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
 DATABASES = {
+    '''
     'default': {
         'ENGINE': 'django.db.backends.mysql',  
         'NAME': env('DB_NAME'),
@@ -94,6 +97,8 @@ DATABASES = {
         'HOST': env('DB_HOST'),  
         'PORT': env('DB_PORT')
     }
+    '''
+    'default': dj_database_url.config(default=os.getenv('DATABASE_URL'))
 }
 
 
@@ -136,6 +141,7 @@ STATICFILES_DIRS = [
     BASE_DIR / 'sweetCocoWeb/static/dev'
 ]
 STATIC_ROOT =  os.path.join(BASE_DIR, 'sweetCocoWeb/static/prod')
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
