@@ -16,6 +16,7 @@ urlpatterns = [
 
     # Login and registration
     path('authorisation/', authorisation, name='authorisation'),
+    path('logout/', logout, name='logout'),
 
     # API URL
     path('products/', ProductListCreateView.as_view(), name='product-list-create'),

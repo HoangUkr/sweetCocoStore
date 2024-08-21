@@ -8,7 +8,12 @@ def index(request):
     return redirect(reverse('sweetCocoWeb:home'))
 # Render home page
 def home(request):
-    return render(request, "PAGE/index.html")
+    context = {
+        'user': request.user
+    }
+    print('Username: ' +str(request.user.username))
+    print('Is authenticated: ' +str(request.user.is_authenticated))
+    return render(request, "PAGE/index.html", context)
 
 # Render shop page
 def shop(request):
@@ -30,7 +35,3 @@ def cart(request):
         'orderItems': order_items
     }
     return render(request, 'PAGE/cart.html', context=context)
-
-# Render login page
-def login(request):
-    return render(request, 'PAGE/login.html')

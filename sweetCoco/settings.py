@@ -55,7 +55,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware'
+    'whitenoise.middleware.WhiteNoiseMiddleware',
+    'sweetCoco.middleware.SessionTimeoutMiddleware'
 ]
 
 ROOT_URLCONF = 'sweetCoco.urls'
@@ -83,7 +84,7 @@ WSGI_APPLICATION = 'sweetCoco.wsgi.application'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
 DATABASES = {
-    '''
+
     'default': {
         'ENGINE': 'django.db.backends.mysql',  
         'NAME': env('DB_NAME'),
@@ -97,8 +98,8 @@ DATABASES = {
         'HOST': env('DB_HOST'),  
         'PORT': env('DB_PORT')
     }
-    '''
-    'default': dj_database_url.config(default=os.getenv('DATABASE_URL'))
+    
+    # 'default': dj_database_url.config(default=env('DATABASE_URL'))
 }
 
 
@@ -148,3 +149,5 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# Session timeout
+SESSION_COOKIE_AGE = 60  # 1 minutes

@@ -133,22 +133,15 @@ def authorisation(request):
             action = data.get('action')
 
             if action.lower() == 'registration':
-                if User.objects.filter(username=user_name).exists():
-                    pass
-                else:
-                    pass
+                pass
             else:
-                print('Request: ')
-                print(request)
-
                 user = authenticate(request, username=user_name, password=password)
-                print('User: ')
-                print(user)
                 if user is not None:
                     login(request, user)
                     response_data = {
                         'type': request.method,
                         'message': 'Login successful.',
+                        'authenticated': True,
                         'errorcode': 0
                     }
                     return JsonResponse(response_data)
@@ -156,6 +149,7 @@ def authorisation(request):
                     response_data = {
                         'type': request.method,
                         'message': 'Wrong username or password.',
+                        'authenticated': False,
                         'errorcode': 1
                     }
                     return JsonResponse(response_data)
@@ -165,6 +159,7 @@ def authorisation(request):
                 'type': request.method,
                 'message': 'No record found.',
                 'errorcode': 1,
+                'authenticated': False,
                 'total': 0
             }
             return JsonResponse(response_data)
@@ -174,5 +169,25 @@ def authorisation(request):
             'message': 'Invalid request method.',
             'errorcode': 1,
             'total': 0
+        }
+        return JsonResponse(response_data)
+    
+# Sign Out
+def logout(request):
+    response_data = {}
+    try:
+        print('Username: ' + request.user.username)
+        logout(request)
+        response_data = {
+            'type': request.method,
+            'message': 'Logout successful.',
+            'errorcode': 0
+        }
+        return JsonResponse(response_data)
+    except Exception:
+        response_data = {
+            'type': request.method,
+            'message': 'Logout failed.',
+            'errorcode': 100
         }
         return JsonResponse(response_data)

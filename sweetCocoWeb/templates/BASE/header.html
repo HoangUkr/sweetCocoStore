@@ -20,7 +20,10 @@
                                         <li>ENG</li>
                                     </ul>
                                 </li>
+                                {% if not user.is_authenticated %}
                                 <li><a href="#" class="openModalBtn">Sign in</a> <span class="arrow_carrot-down"></span></li>
+                                {% endif %}
+                                <li><a href="#" class="signOut">Sign out</a> <span class="arrow_carrot-down"></span></li>
                             </ul>
                         </div>
                         <div class="header__logo">
@@ -28,7 +31,9 @@
                         </div>
                         <div class="header__top__right">
                             <div class="header__top__right__links">
-                                <a href="#" class="search-switch"><img src="{% static 'img/icon/search.png' %}" alt=""></a>
+                                {% if user.is_authenticated %}
+                                <span>Welcome, {{ user.username }}</span>
+                                {% endif %}
                                 <a href="#"><img src="{% static 'img/icon/heart.png' %}" alt=""></a>
                             </div>
                             <div class="header__top__right__cart">
